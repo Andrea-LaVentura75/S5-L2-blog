@@ -1,6 +1,8 @@
 package it.epicode.appBlog.posts;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -31,7 +33,7 @@ public class BlogPostController {
 
     //chiamata per creare un nuovo blogPost http://localhost:8080/api/blogPosts
     @PostMapping
-    public ResponseEntity<BlogPost> createBlogPost( @RequestBody BlogPost request){
+    public ResponseEntity<BlogPost> createBlogPost( @RequestBody BlogPostDTO request){
         return new ResponseEntity<>(blogPostService.createBlogPost(request), HttpStatus.CREATED);
     }
 
@@ -48,4 +50,17 @@ public class BlogPostController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/paged")
+    public ResponseEntity<Page<BlogPost>> getAllBlogPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "id") String sortBy) {
+        return ResponseEntity.ok(blogPostService.findAll(page, size, sortBy));
+    }
+
+//    //altro tipo di paginazione
+//    @GetMapping("/paged")
+//    public ResponseEntity<Page<BlogPost>> getAllBlogPosts(Pageable page) {
+//        return ResponseEntity.ok(blogPostService.findAll(page));
+//    }
 }

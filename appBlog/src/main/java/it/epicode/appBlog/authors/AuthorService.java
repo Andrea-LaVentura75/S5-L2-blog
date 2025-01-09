@@ -31,7 +31,6 @@ public class AuthorService {
     }
 
     //metodo per aggiornare un BlogPost
-
     public Author updateAuthor(Long id, Author authorModificato) {
         Author autrModificato = findById(id);
         BeanUtils.copyProperties(authorModificato,authorModificato);
